@@ -51,28 +51,28 @@ contract land {
 	}
 
 	// Create a new Property.
- function createProperty(uint _propId, uint _value, address _owner) public verifiedAdmin verifiedUser(_owner)  returns (bool)    {
+        function createProperty(uint _propId, uint _value, address _owner) public verifiedAdmin verifiedUser(_owner)  returns (bool)    {
 		properties[_propId] = PropertyDetail(Status.Pending, _value, _owner);
 		return true;
 	}
 
 	// Approve the new Property.
     	function approveProperty(uint _propId) public verifiedSuperAdmin  returns (bool)  {
-		require(properties[_propId].currOwner != msg.sender, 'superAdmin has verified the property');
+		require(properties[_propId].currOwner != msg.sender, 'this validates that the creatorAdmin doesnot own the property');
 		properties[_propId].status = Status.Approved;
 		return true;
 	}
 
 	// Reject the new Property.
 	 function rejectProperty(uint _propId) public verifiedSuperAdmin  returns (bool)  {
-		require(properties[_propId].currOwner != msg.sender,'superAdmin has rejected property');
+		require(properties[_propId].currOwner != msg.sender,'this validates that the creatorAdmin doesnot own the property'');
 		properties[_propId].status = Status.Rejected;
 		return true;
 	}
 
 	// Request Change of Ownership.
 	function changeOwnership(uint _propId, address _newOwner)public onlyOwner(_propId) verifiedUser(_newOwner)  returns (bool)  {
-		require(properties[_propId].currOwner != _newOwner, 'NewOwner doesnt own the current property');
+		require(properties[_propId].currOwner != _newOwner, 'The available property of the current owner should not belong to the new owner');
 		require(propOwnerChange[_propId] == address(0),'newOwner now owns the property');
 		propOwnerChange[_propId] = _newOwner;
 		return true;
@@ -100,31 +100,31 @@ contract land {
 
 	// Add new user.
 	 function addNewUser(address _newUser) public verifiedAdmin  returns (bool)  {
-	    require(users[_newUser] == 0, 'new user added');
-	    require(verifiedUsers[_newUser] == false, 'admin has verified new user');
+	    require(users[_newUser] == 0, 'initially the user doesnt exist');
+	    require(verifiedUsers[_newUser] == false, 'new user value initially is false cz the new user doent exist');
 	    users[_newUser] = 1;
 	    return true;
 	}
 
 	// Add new Admin.
 	 function addNewAdmin(address _newAdmin) public verifiedSuperAdmin  returns (bool)  {
-	    require(users[_newAdmin] == 0, 'adding a new admin');
-	    require(verifiedUsers[_newAdmin] == false, ' superAdmin has verified new Admin');
+	    require(users[_newAdmin] == 0, 'Admin should not be existing');
+	    require(verifiedUsers[_newAdmin] == false, 'Admin should not be existing because true means that admin already exists');
 	    users[_newAdmin] = 2;
 	    return true;
 	}
 
 	// Add new SuperAdmin.
 	 function addNewSuperAdmin(address _newSuperAdmin) public verifiedSuperAdmin  returns (bool)  {
-	    require(users[_newSuperAdmin] == 0, 'Adding new superAdmin');
-	    require(verifiedUsers[_newSuperAdmin] == false, 'SuperAdmin has been verified');
+	    require(users[_newSuperAdmin] == 0, 'superAdmin should not be existing');
+	    require(verifiedUsers[_newSuperAdmin] == false, 'superAdmin should not be existing becuse true means that superadmin already exists');
 	    users[_newSuperAdmin] = 3;
 	    return true;
 	}
 
 	// Approve User.
 	 function approveUsers(address _newUser) public verifiedSuperAdmin  returns (bool)  {
-	    require(users[_newUser] != 0,'A new user has been approved');
+	    require(users[_newUser] != 0,'A new user should already be existing');
 	    verifiedUsers[_newUser] = true;
 	    return true;
 	}

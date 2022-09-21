@@ -22,22 +22,18 @@ before("deploy contract first",async ()=>{
   it("it should set the owner to be the deployer of the contract", async ()=> {
   assert.equal(await _land.creatorAdmin(), superAdmin);
   });
-  // it("Admin approved", async()=>{
+  
+  
+});
+
+
+
+ // it("Admin approved", async()=>{
   //   assert.equal(await _land.users.creatorAdmin, admin,);
   // });
   // it("User approved", async()=>{
   //   assert.equal(await _land.users.creatorAdmin, users);
   // });
-
-  
-    
-
-   
-});
-
-
-
-
     //const addedUser = await _land.users.creatorAdmin;
     // const approved_user = await ethers.getSigners();
     //const use = await _land.approveUsers.users;
